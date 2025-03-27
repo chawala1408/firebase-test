@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from firebase import firebase
+from datetime import datetime
 
 # Firebase connection
 firebase = firebase.FirebaseApplication(
@@ -109,11 +110,14 @@ if not df.empty:
                                 mac_path = f"/Pass/MAC ID/{selected_mac}"
                             elif selected_mac in df_ng['ID'].values:
                                 mac_path = f"/NG/MAC ID/{selected_mac}"
-
+                            current_date = datetime.now().strftime("%d/%m/%y")
                             if mac_path:
                                 # ✅ ใช้ firebase.put() โดยกำหนด 'Localtion' เป็น key
                                 firebase.put(mac_path, "Localtion", new_location)
-
+                                if new_location == "MIC(BPI)" or new_location == "MIC(LB)":
+                                    firebase.put(mac_path, "date_regis", "")
+                                else:
+                                    firebase.put(mac_path, "date_regis", current_date)
                                 st.success(f"✅ อัปเดต Location เป็น `{new_location}` สำเร็จ!")
                                 st.rerun()  # รีเฟรชหน้าเพื่ออัปเดตข้อมูลใหม่
                             else:
