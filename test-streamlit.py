@@ -53,6 +53,7 @@ if not df.empty:
         'cpu_judge',
         'RSSI_judge',
         'LED',
+        'RGB',
     ]
 
     # เลือกเฉพาะ columns ที่มีอยู่ใน DataFrame
